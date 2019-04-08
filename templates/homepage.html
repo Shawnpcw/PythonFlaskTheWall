@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <style>
+        *{
+            /* border: 1px dotted pink; */
+        }
+    .header h1{
+        display: inline-block;
+    }
+    .header h4{
+        display: inline-block;
+        margin-left: 30%;
+    }
+    .header a{
+        display: inline-block;
+        margin-left: 5%;
+    }
+    .header{
+        border-bottom: 2px solid black;
+    }
+    .main{
+        padding: 2%;
+    }
+    .main h4{
+        display: inline-block;
+    }
+    .send_messages{
+        display: inline-block;
+        margin-left: 5%;
+        width: 500px;
+        vertical-align: top;
+    }
+    .messages{
+        display: inline-block;
+        width: 500px;
+    }
+    label{
+        vertical-align: top;
+    }
+    
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="row card-title">
+            <div class="col-md-8"> <h1>CodingDojo Wall</h1></div>
+            <div class="col-md-2"><h4>Welcome {{session['user'][0]['first_name']}}</h4></div>
+            <div class="col-md-2"><a href="/logout">Logout</a></div>
+        </div>
+        <div class="row ">
+            <div class="col-md-6 card card-body">
+                <div>
+                    <h4>{{numMes}} Message(s) for you {{session['user'][0]['first_name']}} </h4>
+                    <div class="currentMessages">
+                        {% for i in session['data'] %}
+                        <form action="/delete" method="POST" class="row">               
+                            <div class="col-md-10"> <p class="">{{i['first_name']}} said:</p>
+                            <p  style="margin-left: 2%;">"{{i['content']}}"</p></div>
+                            <div class="col-md-2"><button type="submit" class="btn btn-link text-danger">Delete</button></div>
+                            <input type="hidden" name="messageID" value="{{session['data'][0]['id']}}">
+                        </form>
+                        <hr>
+                        {%endfor%}
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 card card-body">
+                <h4>Send a message.</h4>
+                <p>you have sent a total of {{messSent}} messages so far</p>
+                {% for i in otherusers %}
+                <form action="/messages" method="POST" class="row">               
+                    <label class="col-md-3" for="mesInput">{{i['first_name']}}</label>
+                    <textarea class="form_control col-md-7 " rows="3" cols="3" id="comment" name="message" placeholder="Add Message"></textarea>
+                    <div class="col-md-1"><button type="submit" class="btn">Send!</button></div>
+                    <input type="hidden" name="sendID" value="{{session['logged_user_id']}}">
+                    <input type="hidden" name="reciverID" value="{{i['id']}}">
+                    
+                </form>
+                <hr>
+                {%endfor%}
+            </div>
+        </div>
+
+    </div>
+</body>
+</html>
